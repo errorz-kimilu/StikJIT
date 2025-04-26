@@ -101,4 +101,28 @@
     replyHandler(@(YES), nil);
 }
 
+- (void)process_control_kill_appWithBody:(NSDictionary *)body replyHandler:(nonnull void (^)(id _Nullable, NSString * _Nullable))replyHandler {
+        
+    int clientId = [body[@"handle"] intValue];
+    if(!handles[@(clientId)] || handles[@(clientId)].freeFunc != process_control_free) {
+        replyHandler(nil, @"Invalid process control handle");
+    }
+    IDeviceHandle* clientHandleObj = handles[@(clientId)];
+    ProcessControlAdapterHandle* process_control = clientHandleObj.handle;
+    
+    uint64_t pid = [body[@"pid"] unsignedLongLongValue];
+    if(pid == 0) {
+        replyHandler(nil, @"Invalid pid");
+        return;
+    }
+    
+    IdeviceErrorCode err = process_control_kill_app(process_control, pid);
+    if (err != IdeviceSuccess) {
+        replyHandler(nil, [NSString stringWithFormat:@"error code %d", err]);
+        return;
+    }
+    
+    replyHandler(@(YES), nil);
+}
+
 @end

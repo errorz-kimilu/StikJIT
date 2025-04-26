@@ -103,6 +103,14 @@ async function process_control_disable_memory_limit(handle, pid) {
     });
 }
 
+async function process_control_kill_app(handle, pid) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "process_control_kill_app",
+        "handle": handle,
+        "pid": pid
+    });
+}
+
 async function debug_proxy_adapter_new(adapter) {
     return await webkit.messageHandlers.ideviceCallback.postMessage({
         "command": "debug_proxy_adapter_new",
@@ -308,7 +316,7 @@ async function installation_proxy_install(client, package_path, options, callbac
     }
 }
 
-async function installation_proxy_upgrade(handle, package_path, options, callback) {
+async function installation_proxy_upgrade(client, package_path, options, callback) {
     if(callback) {
         let id = installation_proxy_js_callback_register(callback)
         let ans = await webkit.messageHandlers.ideviceCallback.postMessage({
@@ -331,7 +339,7 @@ async function installation_proxy_upgrade(handle, package_path, options, callbac
     }
 }
 
-async function installation_proxy_uninstall(handle, bundle_id, options, callback) {
+async function installation_proxy_uninstall(client, bundle_id, options, callback) {
     if(callback) {
         let id = installation_proxy_js_callback_register(callback)
         let ans = await webkit.messageHandlers.ideviceCallback.postMessage({
@@ -354,8 +362,84 @@ async function installation_proxy_uninstall(handle, bundle_id, options, callback
     }
 }
 
+async function amfi_connect_tcp() {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "amfi_connect_tcp"
+    });
+}
 
+async function amfi_reveal_developer_mode_option_in_ui(handle) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "amfi_reveal_developer_mode_option_in_ui",
+        "handle": handle
+    });
+}
 
+async function amfi_enable_developer_mode(handle) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "amfi_enable_developer_mode",
+        "handle": handle
+    });
+}
+
+async function amfi_accept_developer_mode(handle) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "amfi_accept_developer_mode",
+        "handle": handle
+    });
+}
+
+async function misagent_connect_tcp() {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "misagent_connect_tcp"
+    });
+}
+
+async function misagent_install(handle, data_handle) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "misagent_install",
+        "handle": handle,
+        "data_handle": data_handle
+    });
+}
+
+async function misagent_remove(handle, profile_id) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "misagent_remove",
+        "handle": handle,
+        "profile_id": profile_id
+    });
+}
+
+async function misagent_copy_all(handle) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "misagent_copy_all",
+        "handle": handle,
+    });
+}
+
+async function location_simulation_new(server) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "location_simulation_new",
+        "server": server
+    });
+}
+
+async function location_simulation_clear(handle) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "location_simulation_clear",
+        "handle": handle
+    });
+}
+
+async function location_simulation_set(handle, latitude, longitude) {
+    return await webkit.messageHandlers.ideviceCallback.postMessage({
+        "command": "location_simulation_set",
+        "handle": handle,
+        "latitude": latitude,
+        "longitude": longitude,
+    });
+}
 
 // data related, not idevice
 

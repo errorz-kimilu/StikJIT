@@ -35,6 +35,9 @@ struct RunJSView : View {
                 Button("Install App") {
                     selectScript(path: "test2.html")
                 }
+                Button("Location Simulation") {
+                    selectScript(path: "test3.html")
+                }
             }
         }
         .sheet(isPresented: $webViewShow) {
